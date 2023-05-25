@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import pingController from "./controllers/pingController.js";
+import pingController from "./controllers/pingController/pingController.js";
 import {
   generalError,
   notFoundError,
 } from "./middlewares/errorMiddlewares/errorMiddleware.js";
+import paths from "./paths/paths.js";
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.use(express.json());
 
 app.disable("x-powered-by");
 
-app.get("/", pingController);
+app.get(paths.pingController, pingController);
 
 app.use(notFoundError);
 
