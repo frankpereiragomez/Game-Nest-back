@@ -1,3 +1,12 @@
-const a = 3;
+import "./loadEnvironment.js";
+import createDebug from "debug";
+import chalk from "chalk";
+import app from "./server/index.js";
 
-export default a;
+const debug = createDebug("game-nest-api:root");
+
+const port = process.env.PORT ?? 4000;
+
+app.listen(port, () => {
+  debug(chalk.green(`Listening on http://localhost:${port}`));
+});
