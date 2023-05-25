@@ -14,4 +14,6 @@ app.use(
 
 app.use(morgan("dev"));
 
+app.use(express.json());
+
 export default app;
