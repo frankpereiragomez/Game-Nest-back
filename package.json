@@ -9,7 +9,10 @@
     "start:dev": "node --watch dist",
     "build": "tsc",
     "build:dev": "tsc --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:dev": "jest --watchAll",
+    "test:coverage": "jest --coverage",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
