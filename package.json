@@ -35,6 +35,7 @@
     "@types/lint-staged": "^13.2.0",
     "@types/morgan": "^1.9.4",
     "@types/prettier": "^2.7.2",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "lint-staged": "^13.2.2",
     "morgan": "^1.10.0",
