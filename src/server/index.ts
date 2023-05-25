@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import pingController from "./controllers/pingController.js";
+import pingController from "./controllers/pingController/pingController.js";
 import {
   generalError,
   notFoundError,
