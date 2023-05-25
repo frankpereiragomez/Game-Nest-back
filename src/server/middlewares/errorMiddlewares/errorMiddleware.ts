@@ -1,6 +1,6 @@
 import createDebug from "debug";
 import { type NextFunction, type Request, type Response } from "express";
-import CustomError from "../../../CustomError/CustomError";
+import CustomError from "../../../CustomError/CustomError.js";
 import chalk from "chalk";
 
 const debug = createDebug("game-nest:server:middlewares:errorMiddleware");
