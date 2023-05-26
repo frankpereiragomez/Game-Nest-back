@@ -1,18 +1,15 @@
 import { type NextFunction, type Response } from "express";
-import {
-  type UserCredentialsStructure,
-  type UserCredentialsRequest,
-} from "../../types";
+import { type UserCredentialsRequest } from "../../types";
 import bcrypt from "bcryptjs";
 import User from "../../../database/models/User";
 import jwt from "jsonwebtoken";
 import { loginUser } from "./userController";
 import CustomError from "../../../CustomError/CustomError";
-import { Types } from "mongoose";
 import {
   okResponse,
   wrongCredentials,
 } from "../../utils/responseData/responseData";
+import { userMock } from "../../../mocks/mocks";
 
 beforeEach(() => jest.clearAllMocks());
 
@@ -28,12 +25,6 @@ describe("Given a loginUser controller", () => {
     json: jest.fn(),
   };
   const next = jest.fn();
-
-  const userMock: UserCredentialsStructure = {
-    _id: new Types.ObjectId().toString(),
-    username: "admin",
-    password: "admin",
-  };
 
   describe("When it receives a request with a valid credentials and a response", () => {
     const expectedToken = "J.J.Token";

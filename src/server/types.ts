@@ -6,7 +6,8 @@ export interface UserCredentials {
 }
 
 export interface UserCredentialsStructure extends UserCredentials {
-  _id: string;
+  _id?: string;
+  name: string;
 }
 
 export type UserCredentialsRequest = Request<
