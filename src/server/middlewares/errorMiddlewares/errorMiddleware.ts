@@ -6,8 +6,9 @@ import {
   endpointNotFound,
   generalErrorResponse,
 } from "../../utils/responseData/responseData.js";
+import { ValidationError } from "express-validation";
 
-const debug = createDebug("game-nest:server:middlewares:errorMiddleware");
+const debug = createDebug("game-nest-api:server:middlewares:errorMiddlewares");
 
 export const notFoundError = (
   _req: Request,
@@ -29,6 +30,15 @@ export const generalError = (
   _next: NextFunction
 ) => {
   debug(`Error: ${chalk.red(error.message)}`);
+
+  if (error instanceof ValidationError && error.details.body) {
+    const validationError = error.details.body
+      .map((joiError) => joiError.message.replaceAll('"', ""))
+      .join(" & ");
+
+    (error as CustomError).publicMessage = validationError;
+    debug(chalk.red(validationError));
+  }
 
   const statusCode = error.statusCode || generalErrorResponse.statusCode;
 
