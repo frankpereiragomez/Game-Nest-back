@@ -2,8 +2,9 @@ import jwt, { type JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { type NextFunction, type Response } from "express";
 import { type UserCredentialsRequest } from "../../types";
-import User from "../../../database/models/User";
-import CustomError from "../../../CustomError/CustomError";
+import User from "../../../database/models/User.js";
+import CustomError from "../../../CustomError/CustomError.js";
+import { wrongCredentials } from "../../utils/responseData/responseData";
 
 export const loginUser = async (
   req: UserCredentialsRequest,
@@ -16,7 +17,10 @@ export const loginUser = async (
 
   try {
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      const error = new CustomError(401, "Wrong credentials");
+      const error = new CustomError(
+        wrongCredentials.statusCode,
+        wrongCredentials.message
+      );
 
       throw error;
     }
