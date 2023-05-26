@@ -1,5 +1,5 @@
 import { Schema, Types, model } from "mongoose";
-import User from "./User";
+import User from "./User.js";
 
 const videogameSchema = new Schema({
   name: {
@@ -28,7 +28,7 @@ const videogameSchema = new Schema({
     type: String,
     required: true,
   },
-  videoGameCompany: {
+  videogameCompany: {
     type: String,
     required: true,
   },
