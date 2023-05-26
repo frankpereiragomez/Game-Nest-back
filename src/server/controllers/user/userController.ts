@@ -4,7 +4,7 @@ import { type NextFunction, type Response } from "express";
 import { type UserCredentialsRequest } from "../../types";
 import User from "../../../database/models/User.js";
 import CustomError from "../../../CustomError/CustomError.js";
-import { wrongCredentials } from "../../utils/responseData/responseData";
+import { wrongCredentials } from "../../utils/responseData/responseData.js";
 
 export const loginUser = async (
   req: UserCredentialsRequest,
