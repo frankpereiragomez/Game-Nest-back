@@ -15,3 +15,7 @@ export type UserCredentialsRequest = Request<
   Record<string, unknown>,
   UserCredentials
 >;
+
+export interface CustomRequest extends Request {
+  userId: string;
+}
