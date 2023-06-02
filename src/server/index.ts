@@ -8,6 +8,7 @@ import {
 } from "./middlewares/errorMiddlewares/errorMiddleware.js";
 import paths from "./utils/paths/paths.js";
 import userRouter from "./routers/user/userRouter.js";
+import videogamesRouter from "./routers/videogames/videogamesRouter.js";
 
 const app = express();
 
@@ -31,6 +32,8 @@ app.disable("x-powered-by");
 app.get(paths.pingController, pingController);
 
 app.use(paths.userController, userRouter);
+
+app.use(paths.videogamesController, videogamesRouter);
 
 app.use(notFoundError);
 
