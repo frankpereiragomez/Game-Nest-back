@@ -95,8 +95,8 @@ describe("Given a removeVideogame controller", () => {
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
-    test(`Then it should call the response's method json with a 'videogame ${req.params.videogameId} deleted`, async () => {
-      const expectedMessage = `videogame ${req.params.videogameId} deleted`;
+    test(`Then it should call the response's method json with a 'videogame deleted`, async () => {
+      const expectedMessage = `videogame deleted`;
 
       await removeVideogame(
         req as CustomParamsRequest,
