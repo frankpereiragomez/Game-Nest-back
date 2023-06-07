@@ -4,11 +4,9 @@ import videogamesMock from "../../../data/videogames";
 import { okResponse } from "../../utils/responseData/responseData";
 import Videogame from "../../../database/models/Videogame";
 import { getVideogames, removeVideogame } from "./videogamesController";
-import { type CustomRequest } from "../../types";
 import CustomError from "../../../CustomError/CustomError";
 import { videogameNotFound } from "../../utils/responseData/responseData";
-
-type CustomRequestWithParams = Pick<CustomRequest, "params">;
+import { type CustomParamsRequest } from "../../types";
 
 const res: Pick<Response, "status" | "json"> = {
   status: jest.fn().mockReturnThis(),
@@ -74,10 +72,8 @@ describe("Given a getVideogames controller", () => {
 });
 
 describe("Given a removeVideogame controller", () => {
-  const req: CustomRequestWithParams = {
-    params: {
-      id: videogamesMock[0]._id.toString(),
-    },
+  const req: Pick<CustomParamsRequest, "params"> = {
+    params: { videogameId: videogamesMock[0]._id.toString() },
   };
 
   describe("When it receives a request with an id and the videogame exist", () => {
@@ -91,7 +87,7 @@ describe("Given a removeVideogame controller", () => {
       });
 
       await removeVideogame(
-        req as Request<{ id: string }>,
+        req as CustomParamsRequest,
         res as Response,
         next as NextFunction
       );
@@ -99,11 +95,11 @@ describe("Given a removeVideogame controller", () => {
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
-    test(`Then it should call the response's method json with a 'videogame ${req.params.id} deleted`, async () => {
-      const expectedMessage = `videogame ${req.params.id} deleted`;
+    test(`Then it should call the response's method json with a 'videogame ${req.params.videogameId} deleted`, async () => {
+      const expectedMessage = `videogame ${req.params.videogameId} deleted`;
 
       await removeVideogame(
-        req as Request<{ id: string }>,
+        req as CustomParamsRequest,
         res as Response,
         next as NextFunction
       );
@@ -124,7 +120,7 @@ describe("Given a removeVideogame controller", () => {
       );
 
       await removeVideogame(
-        req as Request<{ id: string }>,
+        req as CustomParamsRequest,
         res as Response,
         next as NextFunction
       );

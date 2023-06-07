@@ -2,6 +2,7 @@ import { type Request, type NextFunction, type Response } from "express";
 import Videogame from "../../../database/models/Videogame.js";
 import CustomError from "../../../CustomError/CustomError.js";
 import { videogameNotFound } from "../../utils/responseData/responseData.js";
+import { type CustomParamsRequest } from "../../types.js";
 
 export const getVideogames = async (
   req: Request,
@@ -18,14 +19,14 @@ export const getVideogames = async (
 };
 
 export const removeVideogame = async (
-  req: Request<{ id: string }>,
+  req: CustomParamsRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const { videogameId } = req.params;
 
   try {
-    const videogame = await Videogame.findByIdAndDelete(id).exec();
+    const videogame = await Videogame.findByIdAndDelete(videogameId).exec();
 
     if (!videogame) {
       const error = new CustomError(
