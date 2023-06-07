@@ -37,9 +37,7 @@ export const removeVideogame = async (
       throw error;
     }
 
-    res
-      .status(200)
-      .json({ message: `videogame ${videogame._id.toString()} deleted` });
+    res.status(200).json({ message: `videogame deleted` });
   } catch (error: unknown) {
     next(error);
   }
