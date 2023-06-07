@@ -17,5 +17,5 @@ export type UserCredentialsRequest = Request<
 >;
 
 export interface CustomRequest extends Request {
-  userId: string;
+  id: string;
 }

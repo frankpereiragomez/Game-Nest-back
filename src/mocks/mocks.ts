@@ -33,5 +33,10 @@ export const userMock: UserCredentialsStructure = {
   name: "Admin",
 };
 
+export const tokenPayloadMock = {
+  sub: "646fa078f583d0a4152044a8",
+  name: "Admin",
+};
+
 export const realTokenMock =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDZmYTA3OGY1ODNkMGE0MTUyMDQ0YTgiLCJuYW1lIjoiQWRtaW4iLCJpYXQiOjE2ODU3MzYzNTQsImV4cCI6MTY4NjM0MTE1NH0.G6J50sAehy6a9mBv3iZT5LcR-jUiXRFXebUXTKqxwjA";

@@ -3,14 +3,18 @@ import { type Response, type Request, type NextFunction } from "express";
 import { auth } from "./authMiddleware";
 import { type CustomRequest } from "../../types";
 import CustomError from "../../../CustomError/CustomError";
-import { wrongCredentials } from "../../utils/responseData/responseData";
+import {
+  invalidToken,
+  wrongCredentials,
+} from "../../utils/responseData/responseData";
+import { realTokenMock, tokenPayloadMock } from "../../../mocks/mocks";
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
 describe("Given a authMiddleware middleware", () => {
-  const token = "J.J.Token";
+  const token = realTokenMock;
 
   const req: Pick<Request, "header"> = {
     header: jest.fn().mockReturnValue(`Bearer ${token}`),
@@ -20,6 +24,8 @@ describe("Given a authMiddleware middleware", () => {
 
   describe("When it recieves an Authorization header with a valid token and a next funcion", () => {
     test("Then it should call the next function", () => {
+      jwt.verify = jest.fn().mockReturnValue(tokenPayloadMock);
+
       auth(req as CustomRequest, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalled();
@@ -28,11 +34,11 @@ describe("Given a authMiddleware middleware", () => {
 
   describe("When it receives an Authorization header with an invalid token and a next function", () => {
     test("Then it should call the next function with a 'Invalid token' error message", () => {
-      const expectedErrorMessage = "Invalid token";
       const expectedError = new CustomError(
-        wrongCredentials.statusCode,
-        expectedErrorMessage
+        invalidToken.statusCode,
+        invalidToken.message
       );
+      expectedError.name = "JsonWebTokenError";
 
       jwt.verify = jest.fn().mockImplementation(() => {
         throw expectedError;

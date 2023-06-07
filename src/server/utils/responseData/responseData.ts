@@ -15,6 +15,11 @@ export const wrongCredentials: ResponseStructure = {
   message: "Wrong credentials",
 };
 
+export const invalidToken: ResponseStructure = {
+  statusCode: 401,
+  message: "Invalid token",
+};
+
 export const generalErrorResponse: ResponseStructure = {
   statusCode: 500,
   message: "General error",
