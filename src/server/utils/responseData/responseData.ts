@@ -5,9 +5,19 @@ export const endpointNotFound: ResponseStructure = {
   message: "Endpoint not found",
 };
 
+export const videogameNotFound: ResponseStructure = {
+  statusCode: 404,
+  message: "Videogame not found",
+};
+
 export const wrongCredentials: ResponseStructure = {
   statusCode: 401,
   message: "Wrong credentials",
+};
+
+export const invalidToken: ResponseStructure = {
+  statusCode: 401,
+  message: "Invalid token",
 };
 
 export const generalErrorResponse: ResponseStructure = {

@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 import { type NextFunction, type Response } from "express";
 import CustomError from "../../../CustomError/CustomError.js";
-import { wrongCredentials } from "../../utils/responseData/responseData.js";
+import {
+  invalidToken,
+  wrongCredentials,
+} from "../../utils/responseData/responseData.js";
 import { type CustomRequest } from "../../types";
 
 export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -18,15 +21,15 @@ export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
 
     const token = authorizationHeader.replace("Bearer ", "");
 
-    const payload = jwt.verify(token, process.env.JWT_SECRET!);
+    const { sub: id } = jwt.verify(token, process.env.JWT_SECRET!);
 
-    req.userId = payload.sub as string;
+    req.id = id as string;
 
     next();
   } catch (error: unknown) {
     const customError =
       (error as Error).name === "JsonWebTokenError"
-        ? new CustomError(wrongCredentials.statusCode, "Invalid token")
+        ? new CustomError(invalidToken.statusCode, invalidToken.message)
         : error;
 
     next(customError);
