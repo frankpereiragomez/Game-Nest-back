@@ -17,5 +17,12 @@ export type UserCredentialsRequest = Request<
 >;
 
 export interface CustomRequest extends Request {
-  id: string;
+  userId: string;
+}
+
+export interface CustomParamsRequest extends Request {
+  userId: string;
+  params: {
+    videogameId: string;
+  };
 }

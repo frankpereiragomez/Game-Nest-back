@@ -5,9 +5,13 @@ import {
   invalidToken,
   wrongCredentials,
 } from "../../utils/responseData/responseData.js";
-import { type CustomRequest } from "../../types";
+import { type CustomParamsRequest } from "../../types";
 
-export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
+export const auth = (
+  req: CustomParamsRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const authorizationHeader = req.header("Authorization");
 
@@ -23,7 +27,7 @@ export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
 
     const { sub: id } = jwt.verify(token, process.env.JWT_SECRET!);
 
-    req.id = id as string;
+    req.userId = id as string;
 
     next();
   } catch (error: unknown) {

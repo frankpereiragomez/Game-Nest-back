@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { type Response, type Request, type NextFunction } from "express";
 import { auth } from "./authMiddleware";
-import { type CustomRequest } from "../../types";
+import { type CustomParamsRequest } from "../../types";
 import CustomError from "../../../CustomError/CustomError";
 import {
   invalidToken,
@@ -26,7 +26,7 @@ describe("Given a authMiddleware middleware", () => {
     test("Then it should call the next function", () => {
       jwt.verify = jest.fn().mockReturnValue(tokenPayloadMock);
 
-      auth(req as CustomRequest, res as Response, next as NextFunction);
+      auth(req as CustomParamsRequest, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalled();
     });
@@ -44,7 +44,7 @@ describe("Given a authMiddleware middleware", () => {
         throw expectedError;
       });
 
-      auth(req as CustomRequest, res as Response, next as NextFunction);
+      auth(req as CustomParamsRequest, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
@@ -61,7 +61,7 @@ describe("Given a authMiddleware middleware", () => {
         header: jest.fn().mockReturnValue(token),
       };
 
-      auth(req as CustomRequest, res as Response, next as NextFunction);
+      auth(req as CustomParamsRequest, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
