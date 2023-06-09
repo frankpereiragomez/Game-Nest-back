@@ -6,9 +6,10 @@ const videogameSchema = {
     name: Joi.string().required(),
     genre: Joi.string().required(),
     price: Joi.number().required(),
+    pegi: Joi.string(),
+    description: Joi.string().required(),
     developers: Joi.string().required(),
     image: Joi.string().required(),
-    description: Joi.string().required(),
   }),
 };
 

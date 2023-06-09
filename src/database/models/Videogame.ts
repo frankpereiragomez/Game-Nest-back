@@ -28,10 +28,6 @@ const videogameSchema = new Schema({
     type: String,
     required: true,
   },
-  videogameCompany: {
-    type: String,
-    required: true,
-  },
   user: {
     type: Types.ObjectId,
     ref: User,

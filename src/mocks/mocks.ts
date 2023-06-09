@@ -45,6 +45,7 @@ export const newVideogameMock: Partial<VideogameDataStructure> = {
   price: 34,
   developers: "Nintendo",
   image: "1",
+  pegi: "234",
   description: "Bal Bla Bla Pikmin 4",
 };
 
