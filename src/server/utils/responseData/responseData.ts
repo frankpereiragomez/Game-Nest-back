@@ -30,7 +30,17 @@ export const okResponse: ResponseStructure = {
   message: "OK",
 };
 
+export const okCreateResponse: ResponseStructure = {
+  statusCode: 201,
+  message: "Your videogame was sucessfully created",
+};
+
 export const badRequestResponse: ResponseStructure = {
   statusCode: 400,
   message: "Validation Failed",
+};
+
+export const badCreateResponse: ResponseStructure = {
+  statusCode: 400,
+  message: "Cannot create your videogame!",
 };

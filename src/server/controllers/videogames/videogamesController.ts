@@ -1,8 +1,13 @@
 import { type Request, type NextFunction, type Response } from "express";
 import Videogame from "../../../database/models/Videogame.js";
 import CustomError from "../../../CustomError/CustomError.js";
-import { videogameNotFound } from "../../utils/responseData/responseData.js";
+import {
+  badCreateResponse,
+  okCreateResponse,
+  videogameNotFound,
+} from "../../utils/responseData/responseData.js";
 import { type CustomParamsRequest } from "../../types.js";
+import { Types } from "mongoose";
 
 export const getVideogames = async (
   req: Request,
@@ -39,6 +44,35 @@ export const removeVideogame = async (
 
     res.status(200).json({ message: `videogame deleted` });
   } catch (error: unknown) {
+    next(error);
+  }
+};
+
+export const createVideogame = async (
+  req: CustomParamsRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req;
+    const addVideogame = req.body;
+
+    const newVideogame = await Videogame.create({
+      ...addVideogame,
+      user: new Types.ObjectId(userId),
+    });
+
+    if (!newVideogame) {
+      const error = new CustomError(
+        badCreateResponse.statusCode,
+        badCreateResponse.message
+      );
+
+      throw error;
+    }
+
+    res.status(okCreateResponse.statusCode).json({ videogame: newVideogame });
+  } catch (error) {
     next(error);
   }
 };

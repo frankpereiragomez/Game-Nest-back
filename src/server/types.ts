@@ -1,4 +1,5 @@
 import { type Request } from "express";
+import { type VideogameDataStructure } from "../types";
 
 export interface UserCredentials {
   username: string;
@@ -25,4 +26,5 @@ export interface CustomParamsRequest extends Request {
   params: {
     videogameId: string;
   };
+  body: Partial<VideogameDataStructure>;
 }
