@@ -1,12 +1,21 @@
 import { type Response, type NextFunction, type Request } from "express";
 
 import videogamesMock from "../../../data/videogames";
-import { okResponse } from "../../utils/responseData/responseData";
+import {
+  badCreateResponse,
+  okCreateResponse,
+  okResponse,
+} from "../../utils/responseData/responseData";
 import Videogame from "../../../database/models/Videogame";
-import { getVideogames, removeVideogame } from "./videogamesController";
+import {
+  createVideogame,
+  getVideogames,
+  removeVideogame,
+} from "./videogamesController";
 import CustomError from "../../../CustomError/CustomError";
 import { videogameNotFound } from "../../utils/responseData/responseData";
 import { type CustomParamsRequest } from "../../types";
+import { newVideogameMock } from "../../../mocks/mocks";
 
 const res: Pick<Response, "status" | "json"> = {
   status: jest.fn().mockReturnThis(),
@@ -126,6 +135,58 @@ describe("Given a removeVideogame controller", () => {
       );
 
       expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+});
+
+describe("Given a createVideogame controller", () => {
+  const req: Pick<CustomParamsRequest, "userId" | "body"> = {
+    userId: "6474c186f583d0ad09204dd3",
+    body: newVideogameMock,
+  };
+
+  describe("When it receives a request with an userId and a body with a new videogame", () => {
+    test("Then it should return the response's method status with 200", async () => {
+      Videogame.create = jest.fn().mockResolvedValue(newVideogameMock);
+
+      await createVideogame(
+        req as CustomParamsRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(okCreateResponse.statusCode);
+    });
+
+    test("Then it should return the response's method json with the new videogame", async () => {
+      Videogame.create = jest.fn().mockResolvedValue(newVideogameMock);
+
+      await createVideogame(
+        req as CustomParamsRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.json).toHaveBeenCalledWith({ videogame: newVideogameMock });
+    });
+  });
+
+  describe("When it receives a next function and the videogame cannot be created", () => {
+    test("Then it should call the next function with the 'Cannot create your videogame!' error message", async () => {
+      const expectedErrorMessage = new CustomError(
+        badCreateResponse.statusCode,
+        badCreateResponse.message
+      );
+
+      Videogame.create = jest.fn().mockResolvedValue(undefined);
+
+      await createVideogame(
+        req as CustomParamsRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(expectedErrorMessage);
     });
   });
 });

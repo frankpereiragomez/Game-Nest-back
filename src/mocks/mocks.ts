@@ -4,6 +4,7 @@ import {
   type UserCredentials,
   type UserCredentialsStructure,
 } from "../server/types";
+import { type VideogameDataStructure } from "../types.js";
 
 export const mockUser: UserCredentialsStructure = {
   username: "admin",
@@ -36,6 +37,16 @@ export const userMock: UserCredentialsStructure = {
 export const tokenPayloadMock = {
   sub: "646fa078f583d0a4152044a8",
   name: "Admin",
+};
+
+export const newVideogameMock: Partial<VideogameDataStructure> = {
+  name: "Pikmin 4",
+  genre: "Strategy",
+  price: 34,
+  developers: "Nintendo",
+  image: "1",
+  pegi: "234",
+  description: "Bal Bla Bla Pikmin 4",
 };
 
 export const realTokenMock =
