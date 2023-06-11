@@ -28,3 +28,10 @@ export interface CustomParamsRequest extends Request {
   };
   body: Partial<VideogameDataStructure>;
 }
+
+export interface CustomRequestQuerys extends Request {
+  query: {
+    limit: string;
+    skip: string;
+  };
+}

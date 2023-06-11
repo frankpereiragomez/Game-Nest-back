@@ -1,4 +1,4 @@
-import { type Response, type NextFunction, type Request } from "express";
+import { type Response, type NextFunction } from "express";
 
 import videogamesMock from "../../../data/videogames";
 import {
@@ -14,7 +14,10 @@ import {
 } from "./videogamesController";
 import CustomError from "../../../CustomError/CustomError";
 import { videogameNotFound } from "../../utils/responseData/responseData";
-import { type CustomParamsRequest } from "../../types";
+import {
+  type CustomRequestQuerys,
+  type CustomParamsRequest,
+} from "../../types";
 import { newVideogameMock } from "../../../mocks/mocks";
 
 const res: Pick<Response, "status" | "json"> = {
@@ -28,20 +31,30 @@ beforeEach(() => {
 });
 
 describe("Given a getVideogames controller", () => {
-  const req = {};
+  const req: Partial<CustomRequestQuerys> = {
+    query: {
+      limit: "10",
+      skip: "5",
+    },
+  };
 
   describe("When it receives a response", () => {
     const expectedStatus = okResponse.statusCode;
 
     Videogame.find = jest.fn().mockReturnValue({
-      limit: jest.fn().mockReturnValue({
-        exec: jest.fn().mockResolvedValue(videogamesMock),
-      }),
+      sort: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      exec: jest.fn().mockResolvedValue(videogamesMock),
+    });
+
+    Videogame.where = jest.fn().mockReturnValue({
+      countDocuments: jest.fn().mockReturnValue(videogamesMock.length),
     });
 
     test("Then it should call the response's method status with 200", async () => {
       await getVideogames(
-        req as Request,
+        req as CustomRequestQuerys,
         res as Response,
         next as NextFunction
       );
@@ -50,12 +63,15 @@ describe("Given a getVideogames controller", () => {
 
     test("Then it should call the response's method json with a list of two videogames", async () => {
       await getVideogames(
-        req as Request,
+        req as CustomRequestQuerys,
         res as Response,
         next as NextFunction
       );
 
-      expect(res.json).toHaveBeenCalledWith({ videogames: videogamesMock });
+      expect(res.json).toHaveBeenCalledWith({
+        videogames: videogamesMock,
+        totalVideogames: videogamesMock.length,
+      });
     });
   });
 
@@ -64,13 +80,14 @@ describe("Given a getVideogames controller", () => {
       const expectedErrorMessage = new Error("Failed connecting to database");
 
       Videogame.find = jest.fn().mockReturnValue({
-        limit: jest.fn().mockReturnValue({
-          exec: jest.fn().mockRejectedValue(expectedErrorMessage),
-        }),
+        sort: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        limit: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockRejectedValue(expectedErrorMessage),
       });
 
       await getVideogames(
-        req as Request,
+        req as CustomRequestQuerys,
         res as Response,
         next as NextFunction
       );

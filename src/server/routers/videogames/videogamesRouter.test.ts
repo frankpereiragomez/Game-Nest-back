@@ -96,7 +96,7 @@ describe("Given a POST '/videogames/create' endpoint", () => {
   });
 
   describe("When it receives a request with a userId and a body with a  wrong videogame form", () => {
-    test("Then it should return a status code 400 and a 'Bad request' error message", async () => {
+    test("Then it should return a status code 400 and a 'Validation failed' error message", async () => {
       const response = await request(app)
         .post(`${paths.videogamesController}/create`)
         .set("Authorization", `Bearer ${realTokenMock}`)
