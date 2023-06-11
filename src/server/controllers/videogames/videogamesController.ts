@@ -1,4 +1,4 @@
-import { type Request, type NextFunction, type Response } from "express";
+import { type NextFunction, type Response } from "express";
 import Videogame from "../../../database/models/Videogame.js";
 import CustomError from "../../../CustomError/CustomError.js";
 import {
@@ -6,18 +6,29 @@ import {
   okCreateResponse,
   videogameNotFound,
 } from "../../utils/responseData/responseData.js";
-import { type CustomParamsRequest } from "../../types.js";
 import { Types } from "mongoose";
+import {
+  type CustomParamsRequest,
+  type CustomRequestQuerys,
+} from "../../types.js";
 
 export const getVideogames = async (
-  req: Request,
+  req: CustomRequestQuerys,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const videogames = await Videogame.find().limit(10).exec();
+    const limit = Number(req.query.limit);
+    const skip = Number(req.query.skip);
 
-    res.status(200).json({ videogames });
+    const videogames = await Videogame.find()
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    const totalVideogames = await Videogame.where().countDocuments();
+
+    res.status(200).json({ videogames, totalVideogames });
   } catch (error) {
     next(error);
   }
