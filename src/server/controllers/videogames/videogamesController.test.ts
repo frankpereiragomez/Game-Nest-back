@@ -9,6 +9,7 @@ import {
 import Videogame from "../../../database/models/Videogame";
 import {
   createVideogame,
+  getVideogameById,
   getVideogames,
   removeVideogame,
 } from "./videogamesController";
@@ -20,6 +21,11 @@ import {
 } from "../../types";
 import { newVideogameMock } from "../../../mocks/mocks";
 
+const req: Pick<CustomParamsRequest, "userId" | "body"> = {
+  userId: "6474c186f583d0ad09204dd3",
+  body: newVideogameMock,
+};
+
 const res: Pick<Response, "status" | "json"> = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn(),
@@ -29,6 +35,8 @@ const next = jest.fn();
 beforeEach(() => {
   jest.clearAllMocks();
 });
+
+const videogame = videogamesMock[0];
 
 describe("Given a getVideogames controller", () => {
   const req: Partial<CustomRequestQuerys> = {
@@ -103,9 +111,7 @@ describe("Given a removeVideogame controller", () => {
   };
 
   describe("When it receives a request with an id and the videogame exist", () => {
-    const videogame = videogamesMock[0];
-
-    test("Then it should call the respense's method status with 200", async () => {
+    test("Then it should call the response's method status with 200", async () => {
       const expectedStatusCode = okResponse.statusCode;
 
       Videogame.findByIdAndDelete = jest.fn().mockReturnValue({
@@ -157,11 +163,6 @@ describe("Given a removeVideogame controller", () => {
 });
 
 describe("Given a createVideogame controller", () => {
-  const req: Pick<CustomParamsRequest, "userId" | "body"> = {
-    userId: "6474c186f583d0ad09204dd3",
-    body: newVideogameMock,
-  };
-
   describe("When it receives a request with an userId and a body with a new videogame", () => {
     test("Then it should return the response's method status with 200", async () => {
       Videogame.create = jest.fn().mockResolvedValue(newVideogameMock);
@@ -198,6 +199,65 @@ describe("Given a createVideogame controller", () => {
       Videogame.create = jest.fn().mockResolvedValue(undefined);
 
       await createVideogame(
+        req as CustomParamsRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(expectedErrorMessage);
+    });
+  });
+});
+
+describe("Given a getVideogameById controller", () => {
+  const req: Pick<CustomParamsRequest, "params"> = {
+    params: { videogameId: videogamesMock[0]._id.toString() },
+  };
+
+  describe("When it receives a request with an  videogame id and the videogame exist", () => {
+    test("Then it should call the response's method status with 200", async () => {
+      const expectedStatusCode = okResponse.statusCode;
+
+      Videogame.findById = jest.fn().mockReturnValue({
+        exec: jest.fn().mockResolvedValue(videogame),
+      });
+
+      await getVideogameById(
+        req as CustomParamsRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
+    });
+
+    test("Then it should return the response's method json with the videogame", async () => {
+      Videogame.findById = jest.fn().mockReturnValue({
+        exec: jest.fn().mockResolvedValue(videogame),
+      });
+
+      await getVideogameById(
+        req as CustomParamsRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.json).toHaveBeenCalledWith({ videogameById: videogame });
+    });
+  });
+
+  describe("When it receives a request with an  videogame id and the videogame  doesn't exist", () => {
+    test("Then it should call the next function with the 'Videogame not found' error message", async () => {
+      const expectedErrorMessage = new CustomError(
+        videogameNotFound.statusCode,
+        videogameNotFound.message
+      );
+
+      Videogame.findById = jest.fn().mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await getVideogameById(
         req as CustomParamsRequest,
         res as Response,
         next as NextFunction
