@@ -43,3 +43,25 @@ Response: Wrong credentials or a Json Web Token
 | `Authorization` | `string` | **Required**. Your JWT token |
 
 Response: A collection of videogames
+
+```text
+  DELETE /videogames/${id}
+```
+
+| Parameter | Type     | Description                             |
+| :-------- | :------- | :-------------------------------------- |
+| `id`      | `string` | **Required**. Id of videogame to delete |
+
+Response: Error or Success message
+
+### Create videogame
+
+```text
+  POST /videogame/create
+```
+
+| Body        | Type     | Description                  |
+| :---------- | :------- | :--------------------------- |
+| `videogame` | `object` | **Required**. Videogame data |
+
+Response: Created contact or error response

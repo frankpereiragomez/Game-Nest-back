@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createVideogame,
+  getVideogameById,
   getVideogames,
   removeVideogame,
 } from "../../controllers/videogames/videogamesController.js";
@@ -20,5 +21,7 @@ videogamesRouter.post(
   validate(videogameSchema, {}, { abortEarly: false }),
   createVideogame
 );
+
+videogamesRouter.get("/:videogameId", getVideogameById);
 
 export default videogamesRouter;

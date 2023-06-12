@@ -4,6 +4,7 @@ import CustomError from "../../../CustomError/CustomError.js";
 import {
   badCreateResponse,
   okCreateResponse,
+  okResponse,
   videogameNotFound,
 } from "../../utils/responseData/responseData.js";
 import { Types } from "mongoose";
@@ -83,6 +84,31 @@ export const createVideogame = async (
     }
 
     res.status(okCreateResponse.statusCode).json({ videogame: newVideogame });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getVideogameById = async (
+  req: CustomParamsRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { videogameId } = req.params;
+
+    const videogameById = await Videogame.findById(videogameId).exec();
+
+    if (!videogameById) {
+      const error = new CustomError(
+        videogameNotFound.statusCode,
+        videogameNotFound.message
+      );
+
+      throw error;
+    }
+
+    res.status(okResponse.statusCode).json({ videogameById });
   } catch (error) {
     next(error);
   }
