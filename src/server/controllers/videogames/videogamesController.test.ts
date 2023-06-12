@@ -1,6 +1,5 @@
 import { type Response, type NextFunction } from "express";
 
-import videogamesMock from "../../../data/videogames";
 import {
   badCreateResponse,
   okCreateResponse,
@@ -20,6 +19,7 @@ import {
   type CustomParamsRequest,
 } from "../../types";
 import { newVideogameMock } from "../../../mocks/mocks";
+import { videogamesMock } from "../../../data/videogames";
 
 const req: Pick<CustomParamsRequest, "userId" | "body"> = {
   userId: "6474c186f583d0ad09204dd3",

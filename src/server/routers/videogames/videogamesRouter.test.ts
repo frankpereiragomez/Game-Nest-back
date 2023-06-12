@@ -13,7 +13,7 @@ import {
 import app from "../../index.js";
 import paths from "../../utils/paths/paths.js";
 import { newVideogameMock, realTokenMock } from "../../../mocks/mocks.js";
-import videogamesMock from "../../../data/videogames.js";
+import { videogameByIdMock, videogamesMock } from "../../../data/videogames";
 
 let server: MongoMemoryServer;
 
@@ -104,6 +104,20 @@ describe("Given a POST '/videogames/create' endpoint", () => {
         .expect(badRequestResponse.statusCode);
 
       expect(response.body.message).toBe(badRequestResponse.message);
+    });
+  });
+});
+
+describe("Given a GET '/:videogameId' endpoint", () => {
+  describe("When it receives a request with an videogameId", () => {
+    test("Then it should return the response's method status code with 200 and the videogame", async () => {
+      const response = await request(app)
+        .get(
+          `${paths.videogamesController}/${videogamesMock[0]._id.toString()}`
+        )
+        .expect(okResponse.statusCode);
+
+      expect(response.body.videogameById).toStrictEqual(videogameByIdMock[0]);
     });
   });
 });
